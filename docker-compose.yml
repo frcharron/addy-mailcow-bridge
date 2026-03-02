@@ -3,6 +3,8 @@ version: '3.8'
 services:
   addy-mailcow-bridge:
     image: theselfhostingart/addy-mailcow-bridge:v1  # Pulls from Docker Hub
+    volumes:
+      - ./lookup:/app/lookup
     ports:
       - "6510:6510"  # Map host port 6510 to container port 6510
     environment:
