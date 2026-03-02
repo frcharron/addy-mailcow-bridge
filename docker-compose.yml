@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   addy-mailcow-bridge:
-    image: theselfhostingart/addy-mailcow-bridge:v1  # Pulls from Docker Hub
+    image: frcharron/addy-mailcow-bridge:latest  # Pulls from Docker Hub
     volumes:
       - ./lookup:/app/lookup
     ports:
