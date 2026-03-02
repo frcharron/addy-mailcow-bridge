@@ -32,6 +32,10 @@ COPY --from=builder /opt/venv /opt/venv
 # Copy your app code (exclude unnecessary files via .dockerignore)
 COPY . .
 
+#Create a volume for API Key lookup file
+RUN mkdir /app/lookup
+VOLUME ["/app/lookup"]
+
 # Change ownership to non-root user
 RUN chown -R appuser:appuser /app
 
