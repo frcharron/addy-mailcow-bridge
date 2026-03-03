@@ -1,4 +1,6 @@
 # Addy-Mailcow-Bridge
+> [!NOTE]
+> It a folk from aquaspy/addy-mailcow-bridge with it own API_KEY management
 
 A simple Flask-based bridge API service that generates random email aliases and creates them via the Mailcow API. This project is designed for self-hosting enthusiasts who want to automate email alias creation connection the official Bitwarden extension with Mailcow API by using the same endpoints of Addy.io to ensure it is compatible on the Bitwarden extension. 
 
@@ -79,11 +81,12 @@ For manual control or if you prefer not to use Compose.
 
 ## Environment Variables
 - **MAILCOW_DOMAIN**: The URL of your Mailcow instance (e.g., ```https://mail.example.com```). Required for API calls.
+- **MAILCOW_API_KEY**: API_KEY from MAILCOW.
 
 Pass additional variables via ```-e``` in ```docker run``` or add them to your ```.env``` file as needed.
 
 ## API Usage
-Once your server is running, you can set the Bitwarden extension to use it at Generator -> Username - Forwarded Email Alias -> Addy.io as service -> put a domain that exists on Mailcow -> Put your MailCow API key -> Put your server URL with your destination email at the end. For example, if you want to receive your emails at mycoolemail@gmail.com, you can use something like this:
+Once your server is running, you can set the Bitwarden extension to use it at Generator -> Username - Forwarded Email Alias -> Addy.io as service -> put a domain that exists on Mailcow -> Put custom API Key (Strongly sugest to generate a UUID) -> Put your server URL with your destination email at the end. For example, if you want to receive your emails at mycoolemail@gmail.com, you can use something like this:
 ```
 https://yourbridgeserver/mycoolemail@gmail.com
 ```
