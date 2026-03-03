@@ -40,7 +40,9 @@ def create_alias(destination_email):
     MAILCOW_API_KEY = (request.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
     
     #Validation pair email:API_KEY
-    found=string_in_file('/app/lookup/pair.txt', f"{destination_email}:{MAILCOW_API_KEY}")
+    if not string_in_file('/app/lookup/pair.txt', f"{destination_email}:{MAILCOW_API_KEY}"):
+        return False
+        
     #Generating the actual alias
     alias = make_alias(domain)
 
