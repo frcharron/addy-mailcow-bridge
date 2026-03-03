@@ -7,6 +7,7 @@ from waitress import serve
 
 load_dotenv() 
 MAILCOW_DOMAIN = os.getenv("MAILCOW_DOMAIN")
+MAILCOW_APP_KEY = os.getenv("MAILCOW_APP_KEY")
 app = Flask(__name__)
 
 def string_in_file(file_path, search_string):
@@ -37,10 +38,10 @@ def create_alias(destination_email):
     #Getting data
     data = request.json
     domain = data.get('domain')
-    MAILCOW_API_KEY = (request.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
+    BRIDGE_API_KEY = (request.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
     
     #Validation pair email:API_KEY
-    if not string_in_file('/app/lookup/pair.txt', f"{destination_email}:{MAILCOW_API_KEY}"):
+    if not string_in_file('/app/lookup/pair.txt', f"{destination_email}:{BRIDGE_API_KEY}"):
         return False
         
     #Generating the actual alias
