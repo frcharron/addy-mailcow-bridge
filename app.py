@@ -38,27 +38,29 @@ def create_alias(destination_email):
     data = request.json
     domain = data.get('domain')
     MAILCOW_API_KEY = (request.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
-    #Generating the actual alias
-    alias = make_alias(domain)
-
-    # Making the actual request
-
-    resp = requests.post(
-    f"{MAILCOW_DOMAIN}/api/v1/add/alias",
-    headers={
-        "Content-Type": "application/json",
-        "x-api-key": MAILCOW_API_KEY
-    },
-    json={
-        "active": 1,
-        "address": alias,
-        "goto": destination_email
-    },
-    timeout=10
-) 
     
-
-    return jsonify({"data": {"email": alias}}), 201
+    #Validation pair email:API_KEY
+    found=string_in_file('/app/lookup/pair.txt', f"{destination_email}:{MAILCOW_API_KEY}")
+    if string_in_file('/app/lookup/pair.txt', f"{destination_email}:{MAILCOW_API_KEY}"):
+        #Generating the actual alias
+        alias = make_alias(domain)
+        # Making the actual request
+        resp = requests.post(
+          f"{MAILCOW_DOMAIN}/api/v1/add/alias",
+          headers={
+            "Content-Type": "application/json",
+            "x-api-key": MAILCOW_API_KEY
+          },
+          json={
+            "active": 1,
+            "address": alias,
+            "goto": destination_email
+          },
+          timeout=10
+        ) 
+        return jsonify({"data": {"email": alias}}), 201
+    else:
+        return False
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=6510)
