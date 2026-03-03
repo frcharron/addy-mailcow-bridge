@@ -38,6 +38,7 @@ def create_alias(destination_email):
     #Getting data
     data = request.json
     domain = data.get('domain')
+    description = data.get('description')
     BRIDGE_API_KEY = (request.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
     
     #Validation pair email:API_KEY
@@ -58,10 +59,36 @@ def create_alias(destination_email):
     json={
         "active": 1,
         "address": alias,
-        "goto": destination_email
+        "goto": destination_email,
+        "sogo_visible": 1
     },
     timeout=10
 ) 
+    if resp.status_code != 200:
+        return resp.status_code
+    try:
+        data=resp.json()
+    except ValueError:
+        return None
+    try:
+        alias_id = data[0]["log"][3]["id"][0]
+    except (KeyError, IndexError, TypeError):
+        return None
+    resp_edit = request.post (
+        f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
+        headers={
+            "Content-Type": "application/json",
+            "x-api-key": MAILCOW_API_KEY
+        },
+        json={
+            "attr":{
+                "public_comment": description
+            },
+            "items":[alias_id]
+            }
+        },
+        timeout=10
+    )
 
 
     return jsonify({"data": {"email": alias}}), 201
