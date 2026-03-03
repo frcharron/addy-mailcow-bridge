@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from os import getenv
+import os
 from dotenv import load_dotenv
 from secrets import token_urlsafe
 import requests
@@ -8,6 +8,24 @@ from waitress import serve
 load_dotenv() 
 MAILCOW_DOMAIN = getenv("MAILCOW_DOMAIN")
 app = Flask(__name__)
+
+def string_in_file(file_path, search_string):
+    """
+    Check if a string exists in a file.
+    Returns True if found, False otherwise.
+    """
+    # Validate file existence
+    if not os.path.isfile(file_path):
+        return False
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
+            for line_number, line in enumerate(file, start=1):
+                if search_string in line:
+                    return True
+        return False
+    except Exception as e:
+        return False
+
 
 def make_alias(domain: str, bytes: int = 16) -> str:
     """Return a random alias like: aBc3dE5fGh@domain.tld"""
