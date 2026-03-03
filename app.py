@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from secrets import token_urlsafe
 import requests
 from waitress import serve
+from wonderwords import RandomWord
 
 load_dotenv() 
 MAILCOW_DOMAIN = os.getenv("MAILCOW_DOMAIN")
@@ -28,6 +29,14 @@ def string_in_file(file_path, search_string):
         return False
 
 
+def make_alias_random_words(domain: str, nb: int = 3, delimiter="-") -> str:
+    if not isinstance(count, int) or count <= 0:
+        raise ValueError("nb must be a positive integer")
+    r = RandomWord()
+    rw = r.random_words(nb)
+    prefix = delimiter.join(rw)
+    return f"{prefix}@{domain}"
+    
 def make_alias(domain: str, bytes: int = 16) -> str:
     """Return a random alias like: aBc3dE5fGh@domain.tld"""
     local = token_urlsafe(bytes)          # url-safe, no + or /
@@ -46,7 +55,8 @@ def create_alias(destination_email):
         return jsonify(), 401
         
     #Generating the actual alias
-    alias = make_alias(domain)
+    #alias = make_alias(domain)
+    alias = make_alias_random_words(domain)
 
     # Making the actual request
 
