@@ -65,15 +65,15 @@ def create_alias(destination_email):
     timeout=10
 ) 
     if resp.status_code != 200:
-        return resp.status_code
+        return jsonify({"data": {"email": alias}}), resp.status_code
     try:
         data=resp.json()
     except ValueError:
-        return None
+        return jsonify({"data": {"email": alias}}), 500
     try:
         alias_id = data[0]["log"][3]["id"][0]
     except (KeyError, IndexError, TypeError):
-        return None
+        return jsonify({"data": {"email": alias}}), 503
     
     resp_edit = request.post (
         f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
