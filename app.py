@@ -66,31 +66,6 @@ def create_alias(destination_email):
 ) 
     if resp.status_code != 200:
         return jsonify({"data": {"email": alias}}), resp.status_code
-    try:
-        data=resp.json()
-    except ValueError:
-        return jsonify(data), 500
-    try:
-        alias_id = data[0]["log"][3]["id"][0]
-    except (KeyError, IndexError, TypeError):
-        return jsonify(data), 503
-    
-    resp_edit = request.post (
-        f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
-        headers={
-            "Content-Type": "application/json",
-            "x-api-key": MAILCOW_API_KEY
-        },
-        json={
-            "attr":{
-                "public_comment": description
-            },
-            "items":[alias_id]
-        },
-        timeout=10
-    )
-
-
     return jsonify({"data": {"email": alias}}), 201
 
 if __name__ == '__main__':
