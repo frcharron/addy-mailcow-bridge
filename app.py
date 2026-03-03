@@ -85,9 +85,7 @@ def create_alias(destination_email):
             "attr":{
                 "public_comment": description
             },
-            {
-                "items":[alias_id]
-            }
+            "items":[alias_id]
         },
         timeout=10
     )
