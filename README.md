@@ -9,6 +9,7 @@ A simple Flask-based bridge API service that generates random email aliases and 
 - **Mailcow Integration**: Directly interacts with the Mailcow API to add aliases.
 - **Dockerized**: Fully containerized for easy deployment.
 - **Lightweight**: Uses Waitress as the WSGI server for production-ready performance.
+- **Custom API Key management**: Inside file /lookup/pait.txt we define mail and API Key value as exemple@exemple.com:76ee221b-e2ec-4884-9a73-9b6929e3c771
 
 ## Prerequisites
 - A Mailcow instance with API access (API Admin key required).
