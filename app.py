@@ -43,7 +43,7 @@ def create_alias(destination_email):
     
     #Validation pair email:API_KEY
     if not string_in_file('/app/lookup/pair.txt', f"{destination_email}:{BRIDGE_API_KEY}"):
-        return jsonify() 401
+        return jsonify(), 401
         
     #Generating the actual alias
     alias = make_alias(domain)
@@ -65,7 +65,7 @@ def create_alias(destination_email):
     timeout=10
 ) 
     if resp.status_code != 200:
-        return jsonify({"data": {"email": alias}}), resp.status_code
+        return jsonify(), resp.status_code
     return jsonify({"data": {"email": alias}}), 201
 
 if __name__ == '__main__':
