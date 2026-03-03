@@ -6,7 +6,7 @@ import requests
 from waitress import serve
 
 load_dotenv() 
-MAILCOW_DOMAIN = getenv("MAILCOW_DOMAIN")
+MAILCOW_DOMAIN = os.getenv("MAILCOW_DOMAIN")
 app = Flask(__name__)
 
 def string_in_file(file_path, search_string):
