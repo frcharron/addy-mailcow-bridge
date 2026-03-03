@@ -74,6 +74,7 @@ def create_alias(destination_email):
         alias_id = data[0]["log"][3]["id"][0]
     except (KeyError, IndexError, TypeError):
         return None
+    
     resp_edit = request.post (
         f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
         headers={
@@ -84,7 +85,8 @@ def create_alias(destination_email):
             "attr":{
                 "public_comment": description
             },
-            "items":[alias_id]
+            {
+                "items":[alias_id]
             }
         },
         timeout=10
