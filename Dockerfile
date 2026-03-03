@@ -15,6 +15,8 @@ RUN python -m venv /opt/venv && \
 # Stage 2: Runtime stage (use a minimal image)
 FROM python:3.13-slim AS runtime
 
+RUN pip install wonderwords
+
 # Install only runtime essentials (e.g., for potential system calls)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
