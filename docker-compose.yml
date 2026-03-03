@@ -9,4 +9,5 @@ services:
       - "6510:6510"  # Map host port 6510 to container port 6510
     environment:
       - MAILCOW_DOMAIN=https://CHANGEME.com  # Use your own mailcow domain here.
+      - MAILCOW_API_KEY=000000-000000-000000-000000-000000 # Provided by Mailcow UI (API section)
     restart: unless-stopped  # Restart on failure (good for production)
