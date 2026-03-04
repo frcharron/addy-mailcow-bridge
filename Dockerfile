@@ -10,8 +10,7 @@ COPY requirements.txt .
 # Install dependencies in a virtual environment to isolate them
 RUN python -m venv /opt/venv && \
     /opt/venv/bin/pip install --no-cache-dir --upgrade pip && \
-    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt \
-    /opt/venv/bin/pip install --no-cache-dir wonderwords
+    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Stage 2: Runtime stage (use a minimal image)
 FROM python:3.13-slim AS runtime
