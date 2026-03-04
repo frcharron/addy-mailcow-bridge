@@ -28,6 +28,19 @@ def string_in_file(file_path, search_string):
     except Exception as e:
         return False
 
+def getAllAlias() -> json:
+    resp = requests.get(
+    f"{MAILCOW_DOMAIN}/api/v1/get/alias/all",
+    headers={
+        "Content-Type": "application/json",
+        "x-api-key": MAILCOW_API_KEY
+    }
+    timeout=10
+    ) 
+    if resp.status_code == 200:
+        return resp.json()
+    return jsonify()
+
 def make_alias_random_words(domain: str, nb: int = 3, delimiter: str = "-") -> str:
     r = RandomWord()
     rw = r.random_words(nb)
