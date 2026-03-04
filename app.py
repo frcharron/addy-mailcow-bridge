@@ -52,7 +52,7 @@ def create_alias(destination_email):
         return jsonify(), 401
         
     #Generating the actual alias
-    alias = make_alias(domain)
+    alias = make_alias_random_words(domain)
 
     # Making the actual request
 
