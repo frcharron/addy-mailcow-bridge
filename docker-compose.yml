@@ -5,9 +5,9 @@ services:
     image: frcharron/addy-mailcow-bridge:latest  # Pulls from Docker Hub
     volumes:
       - ./lookup:/app/lookup
-    ports:
-      - "6510:6510"  # Map host port 6510 to container port 6510
+    networks:
+      - mailcow-network # Using same network (mailcow-network) for the bridge and the mail project improve speed of the request and security (no need to expose port 6510).
     environment:
-      - MAILCOW_DOMAIN=https://CHANGEME.com  # Use your own mailcow domain here.
+      - MAILCOW_DOMAIN==http://mailcowdockerized-nginx-mailcow-1:8080  
       - MAILCOW_API_KEY=000000-000000-000000-000000-000000 # Provided by Mailcow UI (API section)
     restart: unless-stopped  # Restart on failure (good for production)
