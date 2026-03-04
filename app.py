@@ -34,7 +34,7 @@ def getAllAlias() -> json:
     headers={
         "Content-Type": "application/json",
         "x-api-key": MAILCOW_API_KEY
-    }
+    },
     timeout=10
     ) 
     if resp.status_code == 200:
