@@ -9,7 +9,7 @@ from wonderwords import RandomWord
 load_dotenv() 
 MAILCOW_DOMAIN = os.getenv("MAILCOW_DOMAIN")
 MAILCOW_API_KEY = os.getenv("MAILCOW_API_KEY")
-RANDOM_WORDS_COUNT = os.getenv("RANDOM_WORDS_COUNT")
+RANDOM_WORDS_COUNT = int(os.getenv("RANDOM_WORDS_COUNT"))
 RANDOM_WORDS_DELEMITER = os.getenv("RANDOM_WORDS_DELEMITER")
 RANDOM_CARACTER_NBRE = os.getenv("RANDOM_CARACTER_NBRE")
 
