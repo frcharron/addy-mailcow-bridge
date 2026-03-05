@@ -120,6 +120,8 @@ def create_alias(destination_email):
 
     data=getAllAlias()
     record=findRecordByAttr(data, "address", alias)
+    id=None
+    created=None
     if record is not None:
         id=pickAttr(record, "id")
         created=pickAttr(record, "created")
