@@ -77,12 +77,12 @@ def make_alias_random_words(domain: str) -> str:
     r = RandomWord()
     rw = r.random_words(RANDOM_WORDS_COUNT)
     prefix = RANDOM_WORDS_DELEMITER.join(rw)
-    return f"{prefix}@{domain}"
+    return {prefix}, f"{prefix}@{domain}"
     
 def make_alias(domain: str) -> str:
     """Return a random alias like: aBc3dE5fGh@domain.tld"""
     local = token_urlsafe(RANDOM_CARACTER_NBRE)          # url-safe, no + or /
-    return f"{local}@{domain}"
+    return {local}, f"{local}@{domain}"
 
 @app.route('/<path:destination_email>/api/v1/aliases', methods=['POST']) 
 def create_alias(destination_email):
@@ -97,7 +97,7 @@ def create_alias(destination_email):
         return jsonify(), 401
         
     #Generating the actual alias
-    alias = make_alias_random_words(domain)
+    local, alias = make_alias_random_words(domain)
 
     # Making the actual request
 
@@ -122,9 +122,20 @@ def create_alias(destination_email):
     record=findRecordByAttr(data, "address", alias)
     if record is not None:
         id=pickAttr(record, "id")
+        created=pickAttr(record, "created")
         updateCommentsForAlias(id, description)
         
-    return jsonify({"data": {"id": id, "email": alias}}), 201
+    return jsonify({"data": {
+        "id": local, 
+        "user_id": id,
+        "local_part": local,
+        "email": alias, 
+        "active": True,
+        "description": description,
+        "created_at": created,
+        "updated_at": created,
+        "domain": domain
+    }}), 201
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=6510)
