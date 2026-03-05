@@ -124,7 +124,7 @@ def create_alias(destination_email):
         id=pickAttr(record, "id")
         updateCommentsForAlias(id, description)
         
-    return jsonify({"data": {"id": id, email": alias}}), 201
+    return jsonify({"data": {"id": id, "email": alias}}), 201
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=6510)
