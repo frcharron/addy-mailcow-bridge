@@ -54,29 +54,24 @@ def findRecordByAttr(array: str, idx: str, idxValue):
 def pickAttr(obj: str, idx: str):
     return obj.get(idx)
 
-def updateCommentsForAlias(alias: str, public: str):
-    data=getAllAlias()
-    record=findRecordByAttr(data, "address", alias)
-    if record is not None:
-        id=pickAttr(record, "id")
-        if id is not None:
-            resp = requests.post(
-            f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
-            headers={
-                "Content-Type": "application/json",
-                "x-api-key": MAILCOW_API_KEY
-            },
-            json={
-                "attr": {
-                    "private_comment": "ADDY",
-                    "public_comment": public
-               },
-                "items": [
-                    id
-                ]
-            },
-            timeout=10
-            )
+def updateCommentsForAlias(id: str, public: str):
+    resp = requests.post(
+    f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
+    headers={
+        "Content-Type": "application/json",
+        "x-api-key": MAILCOW_API_KEY
+    },
+    json={
+        "attr": {
+            "private_comment": "ADDY",
+            "public_comment": public
+       },
+        "items": [
+            id
+        ]
+    },
+    timeout=10
+    )
 
 def make_alias_random_words(domain: str) -> str:
     r = RandomWord()
@@ -123,8 +118,13 @@ def create_alias(destination_email):
     if resp.status_code != 200:
         return jsonify(), resp.status_code
 
-    updateCommentsForAlias(alias, description)
-    return jsonify({"data": {"email": alias}}), 201
+    data=getAllAlias()
+    record=findRecordByAttr(data, "address", alias)
+    if record is not None:
+        id=pickAttr(record, "id")
+        updateCommentsForAlias(id, description)
+        
+    return jsonify({"data": {"id": id, email": alias}}), 201
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=6510)
