@@ -56,28 +56,27 @@ def pickAttr(obj: str, idx: str):
 
 def updateCommentsForAlias(alias: str, public: str):
     data=getAllAlias()
-    if data not None:
-        record=findRecordByAttr(data, "address", alias)
-        if record not None:
-            id=pickAttr(record, "id")
-            if id not None:
-                resp = requests.post(
-                f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
-                headers={
-                    "Content-Type": "application/json",
-                    "x-api-key": MAILCOW_API_KEY
-                },
-                json={
-                    "attr": {
-                        "private_comment": "ADDY",
-                        "public_comment": public
-                   },
-                    "items": [
-                        id
-                    ]
-                },
-                timeout=10
-                )
+    record=findRecordByAttr(data, "address", alias)
+    if record not None:
+        id=pickAttr(record, "id")
+        if id not None:
+            resp = requests.post(
+            f"{MAILCOW_DOMAIN}/api/v1/edit/alias",
+            headers={
+                "Content-Type": "application/json",
+                "x-api-key": MAILCOW_API_KEY
+            },
+            json={
+                "attr": {
+                    "private_comment": "ADDY",
+                    "public_comment": public
+               },
+                "items": [
+                    id
+                ]
+            },
+            timeout=10
+            )
 
 def make_alias_random_words(domain: str) -> str:
     r = RandomWord()
