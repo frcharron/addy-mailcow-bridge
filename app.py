@@ -123,6 +123,8 @@ def create_alias(destination_email):
 ) 
     if resp.status_code != 200:
         return jsonify(), resp.status_code
+
+    updateCommentsForAlias(alias, description)
     return jsonify({"data": {"email": alias}}), 201
 
 if __name__ == '__main__':
