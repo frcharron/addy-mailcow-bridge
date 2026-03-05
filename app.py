@@ -41,11 +41,14 @@ def getAllAlias() -> json:
         return resp.json()
     return jsonify()
 
-def findattr(array: str, idx: str, idxValue):
+def findRecordByAttr(array: str, idx: str, idxValue):
     for obj in array:
         if obj.get(idx) == idxValue:
             return obj
     return None
+
+def pickAttr(obj: str, idx: str):
+    return obj.get(idx)
 
 def make_alias_random_words(domain: str, nb: int = 3, delimiter: str = "-") -> str:
     r = RandomWord()
