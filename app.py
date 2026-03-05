@@ -32,7 +32,7 @@ def string_in_file(file_path, search_string):
     except Exception as e:
         return False
 
-def getAllAlias() -> json:
+def getAllAlias():
     resp = requests.get(
     f"{MAILCOW_DOMAIN}/api/v1/get/alias/all",
     headers={
