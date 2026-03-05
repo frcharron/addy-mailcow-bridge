@@ -77,12 +77,12 @@ def make_alias_random_words(domain: str) -> str:
     r = RandomWord()
     rw = r.random_words(RANDOM_WORDS_COUNT)
     prefix = RANDOM_WORDS_DELEMITER.join(rw)
-    return {prefix}, f"{prefix}@{domain}"
+    return f"{prefix}", f"{prefix}@{domain}"
     
 def make_alias(domain: str) -> str:
     """Return a random alias like: aBc3dE5fGh@domain.tld"""
     local = token_urlsafe(RANDOM_CARACTER_NBRE)          # url-safe, no + or /
-    return {local}, f"{local}@{domain}"
+    return f"{local}", f"{local}@{domain}"
 
 @app.route('/<path:destination_email>/api/v1/aliases', methods=['POST']) 
 def create_alias(destination_email):
