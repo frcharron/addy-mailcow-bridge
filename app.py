@@ -5,6 +5,8 @@ from secrets import token_urlsafe
 import requests
 from waitress import serve
 from wonderwords import RandomWord
+from datetime import datetime, timezone
+import threading
 
 load_dotenv() 
 MAILCOW_DOMAIN = os.getenv("MAILCOW_DOMAIN")
@@ -90,17 +92,21 @@ def create_alias(destination_email):
     data = request.json
     domain = data.get('domain')
     description = data.get('description')
+    format = data.get('format', "random_words")
     BRIDGE_API_KEY = (request.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
     
     #Validation pair email:API_KEY
     if not string_in_file('/app/lookup/pair.txt', f"{destination_email}:{BRIDGE_API_KEY}"):
         return jsonify(), 401
         
+    # Get current local date and time
+    local_now = datetime.now()
+    created = local_now.strftime("%Y-%m-%d %H:%M:%S")
+        
     #Generating the actual alias
     local, alias = make_alias_random_words(domain)
 
     # Making the actual request
-
     resp = requests.post(
     f"{MAILCOW_DOMAIN}/api/v1/add/alias",
     headers={
@@ -121,10 +127,8 @@ def create_alias(destination_email):
     data=getAllAlias()
     record=findRecordByAttr(data, "address", alias)
     id=None
-    created=None
     if record is not None:
         id=pickAttr(record, "id")
-        created=pickAttr(record, "created")
         updateCommentsForAlias(id, description)
         
     return jsonify({"data": {"id": local,"user_id":id,"local_part":local,"email": alias,"description": description,"created_at": created,"updated_at": created, "domain": domain,"active":True}}), 201
