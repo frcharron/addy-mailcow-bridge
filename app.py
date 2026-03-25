@@ -148,5 +148,21 @@ def create_alias(destination_email):
                              "active":True}}
                   ), 201
 
+@app.route('/<path:destination_email>/api/v1/aliases/<id>', methods=['PATCH'])
+@app.route('/<path:destination_email>/api/v1/aliases/<id>/restore', methods=['PATCH'])
+@app.route('/<path:destination_email>/api/v1/aliases/<id>', methods=['DELETE'])
+@app.route('/<path:destination_email>/api/v1/aliases/<id>/forget', methods=['DELETE'])
+@app.route('/<path:destination_email>/api/v1/active-aliases/<id>', methods=['DELETE'])
+@app.route('/<path:destination_email>/api/v1/pinned-aliases/<id>', methods=['DELETE'])
+@app.route('/<path:destination_email>/api/v1/attached-recipients-only/<id>', methods=['DELETE'])
+@app.route('/<path:destination_email>/api/v1/aliases', methods=['GET'])
+@app.route('/<path:destination_email>/api/v1/aliases/<id>', methods=['GET'])
+@app.route('/<path:destination_email>/api/v1/active-aliases', methods=['POST']) 
+@app.route('/<path:destination_email>/api/v1/pinned-aliases', methods=['POST']) 
+@app.route('/<path:destination_email>/api/v1/attached-recipients-only', methods=['POST']) 
+@app.route('/<path:destination_email>/api/v1/alias-recipients', methods=['POST']) 
+def unsupported_requests(destination_email, id):
+    return 405
+
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=6510)
