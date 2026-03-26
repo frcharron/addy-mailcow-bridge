@@ -6,6 +6,7 @@ import requests
 from waitress import serve
 from wonderwords import RandomWord
 from datetime import datetime, timezone
+import Enum
 import threading
 
 load_dotenv() 
@@ -14,6 +15,15 @@ MAILCOW_API_KEY = os.getenv("MAILCOW_API_KEY")
 RANDOM_WORDS_COUNT = int(os.getenv("RANDOM_WORDS_COUNT"))
 RANDOM_WORDS_DELEMITER = os.getenv("RANDOM_WORDS_DELEMITER")
 RANDOM_CARACTER_NBRE = int(os.getenv("RANDOM_CARACTER_NBRE"))
+
+class Format (Enum):
+    random_characters = "random_characters"
+    uuid = "uuid"
+    random_words = "random_words"
+    random_male_name = "random_male_name"
+    random_female_name = "random_female_name"
+    random_noun = "random_noun"
+    custom = "custom"
 
 app = Flask(__name__)
 
@@ -104,7 +114,20 @@ def create_alias(destination_email):
     created = local_now.strftime("%Y-%m-%d %H:%M:%S")
         
     #Generating the actual alias
-    local, alias = make_alias_random_words(domain)
+    local = ""
+    alias = ""
+    match Format[format]:
+        case Format.random_words | Format.random_male_name | Format.random_female_name | Format.random_noun:
+            local, alias = make_alias_random_words(domain)
+        case Format.random_characters:
+            local, alias = make_alias(domain)
+        case Format.custom:
+            local = data.get('local_part')
+            if local is None:
+                return "local_part empty", 400
+            alias = f"{local}@{domain}"
+        case _:
+            local, alias = make_alias(domain)
 
     # Making the actual request
     resp = requests.post(
