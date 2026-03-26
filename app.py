@@ -6,7 +6,7 @@ import requests
 from waitress import serve
 from wonderwords import RandomWord
 from datetime import datetime, timezone
-import Enum
+from enum import Enum
 import threading
 
 load_dotenv() 
