@@ -131,7 +131,7 @@ def create_alias(destination_email):
             local = UUID.uuid4()
             alias = f"{local}@{domain}"
         case _:
-            local, alias = make_alias(domain)
+            return f"Format {format} not supported.", 400
 
     # Making the actual request
     resp = requests.post(
