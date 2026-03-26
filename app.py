@@ -162,7 +162,7 @@ def create_alias(destination_email):
 @app.route('/<path:destination_email>/api/v1/attached-recipients-only', methods=['POST']) 
 @app.route('/<path:destination_email>/api/v1/alias-recipients', methods=['POST']) 
 def unsupported_requests(destination_email, id):
-    return 405
+    return "", 405
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=6510)
