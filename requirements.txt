@@ -4,4 +4,4 @@ requests
 waitress
 wonderwords
 datetime
-threading
+Enum
