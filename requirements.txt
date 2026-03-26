@@ -4,4 +4,3 @@ requests
 waitress
 wonderwords
 datetime
-enum
