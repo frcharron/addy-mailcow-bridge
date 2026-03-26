@@ -117,21 +117,22 @@ def create_alias(destination_email):
     #Generating the actual alias
     local = ""
     alias = ""
-    match Format[format]:
-        case Format.random_words | Format.random_male_name | Format.random_female_name | Format.random_noun:
-            local, alias = make_alias_random_words(domain)
-        case Format.random_characters:
-            local, alias = make_alias(domain)
-        case Format.custom:
-            local = data.get('local_part')
-            if local is None:
-                return "local_part empty", 400
-            alias = f"{local}@{domain}"
-        case Format.uuid:
-            local = UUID.uuid4()
-            alias = f"{local}@{domain}"
-        case _:
-            return f"Format {format} not supported.", 400
+    try:
+        match Format[format]:
+            case Format.random_words | Format.random_male_name | Format.random_female_name | Format.random_noun:
+                local, alias = make_alias_random_words(domain)
+            case Format.random_characters:
+                local, alias = make_alias(domain)
+            case Format.custom:
+                local = data.get('local_part')
+                if local is None:
+                    return "local_part empty", 400
+                alias = f"{local}@{domain}"
+            case Format.uuid:
+                local = UUID.uuid4()
+                alias = f"{local}@{domain}"
+    except:
+        return f"Format {format} not supported.", 400
 
     # Making the actual request
     resp = requests.post(
@@ -182,13 +183,16 @@ def create_alias(destination_email):
 @app.route('/<path:destination_email>/api/v1/active-aliases/<id>', methods=['DELETE'])
 @app.route('/<path:destination_email>/api/v1/pinned-aliases/<id>', methods=['DELETE'])
 @app.route('/<path:destination_email>/api/v1/attached-recipients-only/<id>', methods=['DELETE'])
-@app.route('/<path:destination_email>/api/v1/aliases', methods=['GET'])
 @app.route('/<path:destination_email>/api/v1/aliases/<id>', methods=['GET'])
+def unsupported_requests_id(destination_email, id):
+    return "", 405
+
+@app.route('/<path:destination_email>/api/v1/aliases', methods=['GET'])
 @app.route('/<path:destination_email>/api/v1/active-aliases', methods=['POST']) 
 @app.route('/<path:destination_email>/api/v1/pinned-aliases', methods=['POST']) 
 @app.route('/<path:destination_email>/api/v1/attached-recipients-only', methods=['POST']) 
 @app.route('/<path:destination_email>/api/v1/alias-recipients', methods=['POST']) 
-def unsupported_requests(destination_email, id):
+def unsupported_requests(destination_email):
     return "", 405
 
 if __name__ == '__main__':
