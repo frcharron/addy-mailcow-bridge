@@ -7,6 +7,7 @@ from waitress import serve
 from wonderwords import RandomWord
 from datetime import datetime, timezone
 from enum import Enum
+from uuid import UUID
 import threading
 
 load_dotenv() 
@@ -125,6 +126,9 @@ def create_alias(destination_email):
             local = data.get('local_part')
             if local is None:
                 return "local_part empty", 400
+            alias = f"{local}@{domain}"
+        case Format.uuid:
+            local = UUID.uuid4()
             alias = f"{local}@{domain}"
         case _:
             local, alias = make_alias(domain)
