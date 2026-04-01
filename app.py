@@ -91,6 +91,12 @@ def make_alias_random_words(domain: str) -> str:
     rw = r.random_words(RANDOM_WORDS_COUNT)
     prefix = RANDOM_WORDS_DELEMITER.join(rw)
     return f"{prefix}", f"{prefix}@{domain}"
+
+def make_alias_random_nouns(domain: str) -> str:
+    r = RandomWord()
+    rw = r.random_words(RANDOM_WORDS_COUNT, include_parts_of_speech=["nouns"])
+    prefix = RANDOM_WORDS_DELEMITER.join(rw)
+    return f"{prefix}", f"{prefix}@{domain}"
     
 def make_alias(domain: str) -> str:
     """Return a random alias like: aBc3dE5fGh@domain.tld"""
@@ -119,8 +125,10 @@ def create_alias(destination_email):
     alias = ""
     try:
         match Format[format]:
-            case Format.random_words | Format.random_male_name | Format.random_female_name | Format.random_noun:
+            case Format.random_words:
                 local, alias = make_alias_random_words(domain)
+            case Format.random_male_name | Format.random_female_name | Format.random_noun:
+                local, alias = make_alias_random_nouns(domain)
             case Format.random_characters:
                 local, alias = make_alias(domain)
             case Format.custom:
