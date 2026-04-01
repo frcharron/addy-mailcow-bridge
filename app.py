@@ -13,9 +13,9 @@ import threading
 load_dotenv() 
 MAILCOW_DOMAIN = os.getenv("MAILCOW_DOMAIN")
 MAILCOW_API_KEY = os.getenv("MAILCOW_API_KEY")
-RANDOM_WORDS_COUNT = int(os.getenv("RANDOM_WORDS_COUNT"))
-RANDOM_WORDS_DELEMITER = os.getenv("RANDOM_WORDS_DELEMITER")
-RANDOM_CARACTER_NBRE = int(os.getenv("RANDOM_CARACTER_NBRE"))
+RANDOM_WORDS_COUNT = int(os.getenv("RANDOM_WORDS_COUNT", '3'))
+RANDOM_WORDS_DELEMITER = os.getenv("RANDOM_WORDS_DELEMITER", '-')
+RANDOM_CHARACTER_NBRE = int(os.getenv("RANDOM_CHARACTER_NBRE", '6'))
 
 class Format (Enum):
     random_characters = "random_characters"
