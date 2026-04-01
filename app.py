@@ -100,7 +100,7 @@ def make_alias_random_nouns(domain: str) -> str:
     
 def make_alias(domain: str) -> str:
     """Return a random alias like: aBc3dE5fGh@domain.tld"""
-    local = token_urlsafe(RANDOM_CARACTER_NBRE)          # url-safe, no + or /
+    local = token_urlsafe(RANDOM_CHARACTER_NBRE)          # url-safe, no + or /
     return f"{local}", f"{local}@{domain}"
 
 @app.route('/<path:destination_email>/api/v1/aliases', methods=['POST']) 
