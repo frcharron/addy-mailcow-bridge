@@ -94,7 +94,7 @@ def make_alias_random_words(domain: str) -> str:
 
 def make_alias_random_nouns(domain: str) -> str:
     r = RandomWord()
-    rw = r.random_words(RANDOM_WORDS_COUNT, include_parts_of_speech=["nouns"])
+    rw = r.random_words(RANDOM_WORDS_COUNT, include_categories =["nouns"])
     prefix = RANDOM_WORDS_DELEMITER.join(rw)
     return f"{prefix}", f"{prefix}@{domain}"
     
