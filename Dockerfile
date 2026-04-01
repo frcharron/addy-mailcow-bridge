@@ -49,9 +49,6 @@ EXPOSE 6510
 
 # Set Runtime environment variable
 ENV MAILCOW_DOMAIN=http://mailcowdockerized-nginx-mailcow-1:8080
-ENV RANDOM_WORDS_COUNT=3
-ENV RANDOM_WORDS_DELEMITER="-"
-ENV RANDOM_CARACTER_NBRE=16
 
 # Run the app
 CMD ["python", "app.py"]
